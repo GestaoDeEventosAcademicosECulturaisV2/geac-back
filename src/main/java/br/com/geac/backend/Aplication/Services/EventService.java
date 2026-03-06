@@ -146,8 +146,13 @@ public class EventService {
             var category = categoryRepository.findById(dto.categoryId()).orElseThrow();
             event.setCategory(category);
         }
-        if (dto.locationId() != null) {
+        if(dto.onlineLink()!= null && dto.locationId() == null){
+            event.setOnlineLink(dto.onlineLink());
+            event.setLocation(null);
+        }
+        if (dto.locationId() != null && dto.onlineLink()==null) {
             Location location = locationRepository.findById(dto.locationId()).orElseThrow();
+            event.setOnlineLink(null);
             event.setLocation(location);
         }
         if (dto.orgId() != null) {
