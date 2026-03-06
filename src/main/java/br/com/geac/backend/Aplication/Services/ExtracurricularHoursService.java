@@ -26,14 +26,14 @@ public class ExtracurricularHoursService {
         return getHoursByStudentId(loggedUser.getId());
     }
 
-    // Retorna as horas de um aluno específico pelo ID (útil para admins/professores)
+    // Retorna as horas de um aluno específico pelo ID
     public StudentHoursResponseDTO getHoursByStudentId(UUID studentId) {
         var hours = repository.findById(studentId)
                 .orElseThrow(() -> new UserNotFoundException("Dados de horas não encontrados para o aluno especificado."));
         return mapper.toResponseDTO(hours);
     }
 
-    // Retorna as horas de todos os alunos (para painel administrativo)
+    // Retorna as horas de todos os alunos
     public List<StudentHoursResponseDTO> getAllStudentHours() {
         return repository.findTopStudentsByHours().stream()
                 .map(student -> new StudentHoursResponseDTO(
@@ -41,7 +41,7 @@ public class ExtracurricularHoursService {
                         (String) student[1],               // organizer_name
                         ((String) student[2]),
                         ((Number) student[3]).longValue(),
-                        ((Number) student[3]).longValue()
+                        ((Number) student[4]).longValue()
                 )).toList();
     }
 
